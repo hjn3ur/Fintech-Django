@@ -1,0 +1,33 @@
+--
+-- VHDL Architecture my_project_lib.Adder.Behavior
+--
+-- Created:
+--          by - pjpat.UNKNOWN (DESKTOP-05C0T15)
+--          at - 18:47:55 04/ 4/2017
+--
+-- using Mentor Graphics HDL Designer(TM) 2015.1b (Build 4)
+--
+
+LIBRARY ieee;
+USE ieee.std_logic_1164.all;
+USE ieee.numeric_std.all;
+
+ENTITY Adder IS
+  GENERIC (width : POSITIVE := 8); -- Number of fixed point number bits
+ PORT (Left, Right : IN std_logic_vector(width -1 DOWNTO 0); -- Inputs
+ Sum : OUT std_logic_vector(width-1 DOWNTO 0)); -- Output
+END ENTITY Adder;
+
+--
+ARCHITECTURE Behavior OF Adder IS
+BEGIN
+  process(left,right)
+    variable A_1 : integer;
+    variable B_1 : integer;
+  begin
+      A_1 := to_integer(signed(left));
+      B_1 := to_integer(signed(right));
+      Sum <= std_logic_vector(to_signed(A_1,width) - to_signed(B_1,width));
+    end process;
+END ARCHITECTURE Behavior;
+

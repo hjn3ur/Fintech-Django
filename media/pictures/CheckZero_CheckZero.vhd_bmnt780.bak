@@ -1,0 +1,30 @@
+--
+-- VHDL Architecture my_project_lib.CheckZero.CheckZero
+--
+-- Created:
+--          by - pjpat.UNKNOWN (DESKTOP-05C0T15)
+--          at - 13:25:55 02/28/2017
+--
+-- using Mentor Graphics HDL Designer(TM) 2015.1b (Build 4)
+--
+LIBRARY ieee;
+USE ieee.std_logic_1164.all;
+USE ieee.std_logic_arith.all;
+
+ENTITY CheckZero IS
+  PORT ( x: IN std_logic_vector(31 DOWNTO 0);
+          y: IN std_logic_vector(31 DOWNTO 0);
+         output : OUT std_logic_vector(0 downto 0));
+END ENTITY CheckZero;
+
+--
+ARCHITECTURE CheckZero OF CheckZero IS
+BEGIN
+  process ( x,y)
+  begin
+  if (x = "00000000000000000000000000000000" and y = "00000000000000000000000000000000") then
+   output <= "1";
+ end if;
+ end process;
+END ARCHITECTURE CheckZero;
+

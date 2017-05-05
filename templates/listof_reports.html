@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ company.company_name }}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<script>
+
+</script>
+<style>
+    p {
+        padding: 0px 20px 0px 30px;
+        font-size: 16px;
+    }
+
+    button {
+        position: absolute;
+        left: 30px;
+    }
+
+    ul {
+        margin-left: 20px;
+        font-size: 16px
+    }
+
+    .f {
+        padding: 0px 20px 0px 10px;
+        font-size: 16px;
+    }
+    #type {
+      margin-left: 20px;
+    }
+</style>
+<body>
+
+<h2 align="center">Here is the Report for {{ company.company_name }}</h2>
+
+{% include 'company_navbar.html' %}
+{% block content %}
+    {% if authenticated %}
+        <p><a href="{% url 'edit_company' %}?value={{ company.company_name }}&value2={{ report.report_id }}">Edit this
+            Report</a></p>
+    {% endif %}
+
+    <p><b>Date of Original Report:</b> {{ report.company_time }}</p>
+    <!-- <p><b>Last Update of Report:</b> {{ rep.company_update }}</p> -->
+    <p><b>Company Name:</b> {{ report.company_name }}</p>
+    <p><b>CEO:</b> {{ report.company_ceo }}</p>
+    <p><b>Company Phone:</b> {{ report.company_phone }}</p>
+    <p><b>Company Email:</b> {{ report.company_email }}</p>
+    <p><b>Company State:</b> {{ report.company_state }}</p>
+    <p><b>Company Country:</b> {{ report.company_country }}</p>
+    <p><b>Company Sector:</b> {{ report.company_sector }}</p>
+    <p><b>Company Industry:</b> {{ report.company_industry }}</p>
+    <p><b>Public or Private:</b> {{ report.public }}{{ report.private }}</p>
+    <p><b>Company Current Projects:</b></p>
+    {% if projects %}
+
+        <ul>
+            {% for project in projects %}
+                <li><b>{{ company.company_name }}</b> started working on <b>{{ project.project }}</b> on
+                    <b>{{ project.timestamp }}</b></li>
+
+            {% endfor %}
+        </ul>
+    {% else %}
+        <ul>
+            <li>No Current Project</li>
+        </ul>
+    {% endif %}
+
+    <p><b>Company Files:</b></p>
+    {% if pictures %}
+
+        <ul>
+            {% for picture in pictures %}
+                <li><a href="{{ picture.picfile.url }}">{{ picture.picfile.name }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <ul>
+            <li>No Attached Files</li>
+        </ul>
+    {% endif %}
+    {% if report.private == "private" %}
+  </div>
+    <p><b>Company Groups:</b> {{ report.company_groups }}</p>
+    <p><b>Add groups that can access this report:</b></p>
+    <form method="post" class="f">
+        <select name="group_to_add" id="type" required>
+            <option id="group">Add Groups to Report</option>
+            {% for group in groups %}
+                <option id="group" value="{{ group.name }}">{{ group.name }}</option></br>
+            {% endfor %}
+        </select>
+        </br>
+        <button type="submit" name="add_group" value="1">Add</button>
+    </form>
+</div>
+    </br></br>
+    <p><b>Remove groups that have access to this report:</b></p>
+    <form method="post" class="f">
+        <select name="group_to_remove" id="type" required>
+
+            <option>Delete Groups From Report</option>
+            {% for removable in removable %}
+                <option value="{{ removable }}">{{ removable }}</option></br>
+            {% endfor %}
+        </select>
+        </br>
+        <button type="submit" name="remove_group" value="2">Remove</button>
+    </form>
+{% endif %}
+
+{% endblock %}
+</body>
+</html>

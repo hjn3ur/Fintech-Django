@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>Company Home</title>
+
+</head>
+
+<script type="text/javascript">
+        $(document).ready(function () {
+            $('#encrypted').on('change', function () {
+                if ($('select option:selected').text() == "Yes" || $('select option:selected').text() == "No") {
+                    $("#upload").show();
+                }
+                else if ($('select option:selected').text() == "Is the file you are uploading encrypted?") {
+                    $("#upload").hide();
+                }
+            });
+        });
+</script>
+
+<style>
+    p {
+        padding: 0px 20px 0px 0px;
+        margin-left: 10px;
+        margin-right: 10px;
+        font-size: 16px
+    }
+
+    td {
+        font-size: 16px;
+    }
+
+    table {
+        margin-left: 10px;
+    }
+    h3{
+      padding: 0px 20px 0px 0px;
+      margin-left: 10px;
+      margin-right: 10px;
+      font-size: 16px
+    }
+    h4{
+      padding: 0px 20px 0px 0px;
+      margin-left: 10px;
+
+      font-size: 16px
+    }
+    div{
+      padding: 0px 20px 0px 0px;
+      margin-left: 10px;
+
+    }
+</style>
+
+<body>
+
+{% extends 'company_navbar.html' %}
+{% block header %}
+    <h2 align="center">Welcome <strong>{{ user.username }}</strong></h2>
+{% endblock %}
+{% block content %}
+    <h3 align="center">Create a Report</strong></h3>
+    <h4 align="Left"><a align="left" href="{% url 'edit_company' %}">Edit your Information</a></h4>
+
+
+    <table>
+        <tr>
+            <td>
+                <b>Last Update of Information:</b> {{ company.company_update }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>Company Name:</b> {{ company.company_name }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>Company Ceo:</b> {{ company.company_ceo }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>Company Phone:</b> {{ company.company_phone }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>Company Email:</b> {{ company.company_email }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>Company State:</b> {{ company.company_state }}
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>Company Country:</b> {{ company.company_country }}
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>Company Industry:</b> {{ company.company_industry }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>Company Sector:</b> {{ company.company_sector }}
+            </td>
+        </tr>
+    </table>
+    <br>
+    <table>
+        <tr>
+            <td>
+                <!-- the add more doesnt work as of yet-->
+                <b>Here are the list of your current projects:</b>
+                {% if projects %}
+                    <ul>
+                        {% for project in projects %}
+
+                            <li>Started working on <b>{{ project.project }}</b> on <b>{{ project.timestamp }}</b><a href="{% url 'remove_project' %}?value={{ project.project_id }}&value2={{ project.project }}">  Delete</a></li>
+
+
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                <ul>
+                    <li>No Current Project</li>
+                  </ul>
+                {% endif %}
+              </br><h4><a href="{% url 'add_project' %}"> Add Additional Projects</a></h4>
+            </td>
+        </tr>
+        <!-- Make a for loop going through company projects
+        -->
+        <tr>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>
+                </br><b>These are the current files attached to your report</b>
+                {% if pictures %}
+                    <ul>
+                        {% for picture in pictures %}
+                            {% if picture.investor != '' %}
+                                <li>Investor <b>{{ picture.investor }}</b> uploaded <a
+                                        href="{{ picture.picfile.url }}"><b>{{ picture.picfile.name }}</b></a> on
+                                    <b>{{ picture.timestamp }}</b></a><a href="{% url 'remove_file1' %}?value={{ picture.files_id }}&value2={{picture.picfile.name }}"> </a></li>
+
+                            {% else %}
+                                <li>Your company <b>{{ picture.investor }}</b> uploaded <a
+                                        href="{{ picture.picfile.url }}"><b>{{ picture.picfile.name }}</b></a>
+                                    on <b>{{ picture.timestamp }}</b><a href="{% url 'remove_file1' %}?value={{ picture.files_id }}&value2={{ picture.picfile.name }}">  </a></li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                <ul>
+                    <li>No Files!</li>
+                {% endif %}
+              </ul>
+            </td>
+        </tr>
+
+    </table>
+
+
+    <!-- Upload form. Note enctype attribute! -->
+    <div>
+    <form action="{% url 'home' %}?value={{ company.company_name }}" method="post" enctype="multipart/form-data">
+        <div id="hello">
+                <select class="form-control" id="encrypted" name="encrypted" required style="width:30%; padding:0px 20px 0px 30px">
+                    <option>Is the file you are uploading encrypted?</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+        </div>
+        <div id="upload" style="display:none;">
+            {% csrf_token %}
+            <p>{{ form.non_field_errors }}</p>
+            <p>{{ form.picfile.label_tag }} {{ form.picfile.help_text }}</p>
+            <p>
+                {{ form.picfile.errors }}
+                {{ form.picfile }}
+            </p>
+            {% if message2 %}
+            <script>
+                alert('{{ message2 }}')
+            </script>
+            {% endif %}
+            <p><input type="submit" value="Upload"/></p>
+        </div>
+    </form>
+  </div>
+    {% if message %}
+        <script>
+            alert('{{ message }}')
+        </script>
+    {% endif %}
+    <h3 align="center"><a href="{% url 'create_form' %} ">Submit Report</a></h3>
+{% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Report</title>
+    <style>
+    h3 {
+      text-align: center;
+      font-size:25px;
+    }
+        table, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        td {
+            padding: 5px;
+            text-align: left;
+        }
+        button {
+           margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+<form method="post" class="form-signup" action = "{% url 'report' %}">
+  {% csrf_token %}
+  <h3 align="center">Your Report</h3>
+<table style="width: 80%" align="center">
+    <tr>
+        <td>
+            Company Name:
+        </td>
+        <td>
+            <p name='name' >{{ company.company_name }}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Company Ceo:
+        </td>
+        <td>
+            <p name='ceo' >{{ company.company_ceo }}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Company Phone:
+        </td>
+        <td>
+            <p name='phone' >{{ company.company_phone }}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Company Email:
+        </td>
+        <td>
+            <p name='email' >{{ company.company_email }}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Company Location:
+        </td>
+        <td>
+            <p name='location' >{{ company.company_state }}, {{ company.company_country }}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Company Industry:
+        </td>
+        <td>
+            <p name='industry' >{{ company.company_industry }}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Company Sector:
+        </td>
+        <td>
+          <p name='sector' >  {{ company.company_sector }}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Current Project(s):
+        </td>
+        <td>
+            {% if projects %}
+
+                    {% for project in projects %}
+
+                        <p name='project' >{{ project.project}} </p>
+
+                    {% endfor %}
+
+                {% else %}
+                  <p name='project' >  No Current Project</p>
+                {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Files attached:
+        </td>
+        <td>
+            {% if pictures %}
+
+                  {% for picture in pictures %}
+                      {% if picture.investor != '' %}
+
+
+                      {% else %}
+                      <p name='file' >Your company uploaded <a href="{{ picture.picfile.url }}"><b>{{ picture.picfile.name }}</b></a> on <b>{{ picture.timestamp }}</b></li></p>
+                      {% endif %}
+                  {% endfor %}
+
+              {% else %}
+                  <p name='file' >No Files!
+              {% endif %}
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <b>Do you want report to be public or private?</b> </br></td>
+          <td>
+          <input type="radio" name="public" value="public"> Public</input>
+          <input type="radio" name="private" value="private"> Private<br></input>
+        </td>
+    </tr>
+</table>
+
+<br>
+<div style="text-align: center;">
+<button class="btn btn-sm btn-primary btn-block" type="submit">Submit Your Final Report</button>
+</form>
+<h3 align="center">Not Satisfied? Click here <a href="{% url 'home' %}">homepage</a>. </h3>
+</body>
+</html>

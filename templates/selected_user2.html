@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ company.company_name }}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<script>
+
+</script>
+<style>
+    p {
+        padding: 0px 20px 0px 30px;
+        font-size: 16px;
+    }
+
+    button {
+        position: absolute;
+        left: 30px;
+    }
+
+    ul {
+        margin-left: 20px;
+        font-size: 16px
+    }
+</style>
+<body>
+
+<h2 align="center">Here is the Company information for {{ company.company_name }}</h2>
+
+{% include 'admin_navbar.html' %}
+{% block content %}
+
+
+
+    <!-- <p><b>Last Update of Report:</b> {{ rep.company_update }}</p> -->
+    <p><b>Username:</b> {{ investor.username }}</p>
+    <p><b>First Name:</b> {{ investor.first_name }}</p>
+    <p><b>Last Name:</b> {{ investor.last_name }}</p>
+    <p><b>Email:</b> {{ investor.email }}</p>
+    <br>
+    {% if investor.banned %}
+        <p><b>This user is currently banned would you like to unban them</b></p>
+        <p><a href="{% url 'ban_user' %}?value={{ investor }}">unban this user</a></p>
+    {% else %}
+        <p><b>This user is currently not banned would you like to ban them</b></p>
+        <p><a href="{% url 'ban_user' %}?value={{ investor }}">ban this user</a></p>
+    {% endif %}
+
+
+{% endblock %}
+</body>
+</html>

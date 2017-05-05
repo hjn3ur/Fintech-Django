@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ company.company_name }}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#encrypted').on('change', function () {
+            if ($('select option:selected').text() == "Yes" || $('select option:selected').text() == "No") {
+                $("#upload").show();
+            }
+            else if ($('select option:selected').text() == "Is the file you are uploading encrypted?") {
+                $("#upload").hide();
+            }
+        });
+    });
+</script>
+<style>
+    p {
+        padding: 0px 20px 0px 30px;
+        font-size: 16px;
+    }
+
+    button {
+        position: absolute;
+        left: 30px;
+    }
+
+    ul {
+        margin-left: 20px;
+        font-size: 16px
+    }
+    div{
+      padding: 0px 20px 0px 30px;
+      margin-left: 10px;
+
+    }
+</style>
+<body>
+
+<h2 align="center">Here is the Report for {{ company.company_name }}</h2>
+{% if authenticated %}
+    {% include 'admin_navbar.html' %}
+{% else %}
+    {% include 'investor_navbar.html' %}
+{% endif %}
+{% block content %}
+    {% if authenticated %}
+        <p><a href="{% url 'edit_report' %}?value={{ company.company_name }}&value2={{ report.report_id }}">Edit this
+            Report</a></p>
+        <p><a href="{% url 'delete_report' %}?value={{ company.company_name }}&value2={{ report.report_id }}">Delete
+            this
+            Report</a></p>
+    {% endif %}
+
+    <p><b>Date of Original Report:</b> {{ report.company_time }}</p>
+    <!-- <p><b>Last Update of Report:</b> {{ rep.company_update }}</p> -->
+    <p><b>Company Name:</b> {{ report.company_name }}</p>
+    <p><b>CEO:</b> {{ report.company_ceo }}</p>
+    <p><b>Company Phone:</b> {{ report.company_phone }}</p>
+    <p><b>Company Email:</b> {{ report.company_email }}</p>
+    <p><b>Company Country:</b> {{ report.company_country }}</p>
+    <p><b>Company State:</b> {{ report.company_state }}</p>
+    <p><b>Company Sector:</b> {{ report.company_sector }}</p>
+    <p><b>Company Industry:</b> {{ report.company_industry }}</p>
+    <p><b>Public or Private:</b> {{ report.private }}{{ report.public }}</p>
+    <p><b>Company Current Projects:</b></p>
+    {% if projects %}
+        <ul>
+            {% for project in projects %}
+                <li><b>{{ company.company_name }}</b> started working on <b>{{ project.project }}</b> on
+                    <b>{{ project.timestamp }}</b>
+                    {% if authenticated %}
+                        <a href="{% url 'remove_project1' %}?value={{ project.project_id }}&value2={{ project.project }}&value3={{ company.company_name }}">
+                            Delete</a></li>
+                    {% endif %}
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No Current Project</p>
+    {% endif %}
+    <p><b>Company Files:</b></p>
+    {% if pictures %}
+
+        <ul>
+            {% for picture in pictures %}
+                <li>
+                    Uploaded
+                    {% if not picture.encrypted %}
+                        <a href="{{ picture.picfile.url }}"><b>{{ picture.picfile.name }}</b></a>
+                    {% else %}
+                        encrypted file
+                        <strong>{{ picture.picfile.name }}</strong>
+                    {% endif %}
+                    on <b>{{ picture.timestamp }}</b>
+                    {% if authenticated %}
+                        <a href="{% url 'remove_file' %}?value={{ picture.files_id }}&value2={{ picture.picfile.name }}&value3={{ company.company_name }}">
+                            Delete</a></li>
+                    {% endif %}
+            {% endfor %}
+        </ul>
+    {% else %}
+        <ul>
+            <li><p>No Attached Files</p></li>
+        </ul>
+    {% endif %}
+
+    <!-- Upload form. Note enctype attribute! -->
+    <form action="{% url 'company_page' %}?value={{ company.company_name }}&value2={{ report.report_id }}" method="post"
+          enctype="multipart/form-data">
+        <div id="hello">
+        <select class="form-control" id="encrypted" name="encrypted" required
+                style="width:30%; padding:0px 20px 0px 30px">
+            <option>Is the file you are uploading encrypted?</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
+            </div>
+
+        <div id="upload" style="display:none;">
+            {% csrf_token %}
+            <p>{{ form.non_field_errors }}</p>
+            <p>{{ form.picfile.label_tag }} {{ form.picfile.help_text }}</p>
+            <p>
+                {{ form.picfile.errors }}
+                {{ form.picfile }}
+            </p>
+            <p><input type="submit" value="Upload"/></p>
+        </div>
+
+
+    </form>
+{% endblock %}
+</body>
+</html>

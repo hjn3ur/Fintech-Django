@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Groups homepage</title>
+    <style>
+        p {
+            padding: 0px 20px 0px 0px;
+            margin-left: 20px;
+            margin-right: 20px;
+            font-size: 16px;
+        }
+
+        h3 {
+            margin-right: 10px;
+            margin-left: 10px;
+        }
+
+        .f {
+            padding: 0px 20px 0px 10px;
+            font-size: 16px;
+        }
+
+        #bullet {
+            padding: 0px 20px 0px 0px;
+            margin-left: 20px;
+            margin-right: 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+<h2 align="center">Welcome <strong>{{ user.username }}</strong></h2>
+{% include 'admin_navbar.html' %}
+
+{% for company in companys %}
+    <li id='bullet'><a href="{% url 'selected_user' %}?value={{ company }}">{{ company }}</a></li>
+{% endfor %}
+{% for investor in investors %}
+    <li id='bullet'><a href="{% url 'selected_user' %}?value={{ investor }}">{{ investor }}</a></li>
+{% endfor %}
+</body>
+</html>

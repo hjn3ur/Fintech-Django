@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+{% block header %}
+{% endblock %}
+
+<p align="right"><font size="4"><a href="{% url 'logout' %}">Logout</a></font></p>
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="{% url 'home' %}">Lokahi</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="{% if  request.path == '/lokahi/home/' %}active{% endif %}"><a href={% url 'home' %}>Company
+                Reports</a></li>
+            <li class="{% if  request.path == '/lokahi/groups_home/' %}active{% endif %}">
+                <a href="{% url 'groups_home' %}">Groups</a></li>
+            <li class="{% if  request.path == '/lokahi/messages_home/' %}active{% endif %}"><a
+                    href="{% url 'messages_home' %}">Messages {{ new_messages }}
+            </a></li>
+            <li class="{% if  request.path == '/lokahi/advanced_search/' %}active{% endif %}"><a
+                    href="{% url 'advanced_search' %}">Advanced Search</a></li>
+        </ul>
+    </div>
+</nav>
+
+{% block content %}
+{% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Messages from {{ sender }}</title>
+</head>
+<meta charset="UTF-8">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<title>Company Home</title>
+
+</head>
+<style>
+    p {
+        padding: 0px 20px 0px 0px;
+        margin-left: 10px;
+        font-size: 16px
+    }
+
+    td {
+        font-size: 16px;
+    }
+
+    table {
+        margin-left: 10px;
+    }
+
+    #left {
+        width: 65%;
+        padding-left: 5%;
+        padding-right: 2.5%;
+        float: left;;
+    }
+
+    #right {
+        width: 30%;
+        padding-left: 5%;
+        padding-right: 1%;
+        float: left;
+    }
+</style>
+<h2 align="center">Welcome <strong>{{ user.username }}</strong></h2>
+
+<body>
+{% if authenticated %}
+    {% include 'admin_navbar.html' %}
+{% elif investor %}
+    {% include 'investor_navbar.html' %}
+{% else %}
+    {% include 'company_navbar.html' %}
+{% endif %}
+<p>
+    <a href="{% url 'messages_home' %}" style="float: right">Back to all messages</a>
+</p>
+<div class="container">
+<div id="left">
+<table border="1">
+    <th>Your Conversation with {{ sender }}</th>
+    {% for message in messages %}
+        <tr>
+            <td>
+                Message from: {{ message.sender }} </br>
+                Timestamp: {{ message.timestamp }} </br>
+                {% if message.encrypted %}
+                    Encrypted: Yes </br>
+                    Message: <strong>Encrypted Message</strong> </br>
+                    <a href="{% url 'decrypted_message' %}?sender={{ message.sender }}&receiver={{ message.receiver }}&id={{ message.hash_id }}"> Decrypt Message </a>
+                {% else %}
+                    Encrypted: No </br>
+                    Message:<strong> {{ message.message }} </strong>
+                {% endif %} </br>
+                <a href="{% url 'delete_message' %}?value={{ message.sender }}&value2={{message.hash_id}}&value3={{message.receiver}}">  Delete</a>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+</div>
+<div id="right">
+    <form method="post" class="form-signup">
+        <label for="inputMessage" class="sr-only">Your Message</label></br>
+        <textarea placeholder="Enter Message" type="text" name="message" id="inputMessage" class="form-control" style="width: 100%"
+                  autofocus></textarea>
+        <input type="checkbox" name="encryptMessage" value="encrypt"> Encrypt<br/>
+        <br/>
+        <button class="btn btn-sm btn-primary btn-block" type="submit">Send</button>
+        </br>
+    </form>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/sign_up_style.css' %}"/>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#type').on('change', function () {
+                if ($('select option:selected').text() == "Investor") {
+                    $("#investor").show();
+                    $("#company").hide();
+                }
+                else if ($('select option:selected').text() == "Company User") {
+                    $("#investor").hide();
+                    $("#company").show();
+                }
+                else if ($('select option:selected').text() == "Choose Type of User") {
+                    $("#investor").hide();
+                    $("#company").hide();
+                }
+            });
+        });
+    </script>
+    <title>Sign Up</title>
+    <style>
+        h1 {
+            text-align: center;
+        }
+
+        p {
+            padding-left: 5%;
+        }
+
+        .form-signup {
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .form-signup .form-signup-heading {
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .form-signup .form-control {
+            position: relative;
+            height: auto;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 5px;
+
+        }
+
+        .form-signup input[type="text"] {
+            margin-bottom: 5px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .form-signup input[type="email"] {
+            margin-bottom: 5px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .form-signup input[type="password"] {
+            margin-bottom: 5px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+
+        .form-signup input[type="tel"] {
+            margin-bottom: 5px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+
+        .form-column {
+            width: 50%;
+            float: left;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 class="form-signup-heading">Sign Up</h1></br>
+    <select class="form-control" id="type" required>
+        <option>Choose Type of User</option>
+        <option value="1">Investor</option>
+        <option value="2">Company User</option>
+    </select>
+    </br>
+    <div id="investor" style="display:none;">
+        <form method="post" class="form-signup">
+            <input type="hidden" name="type" value="1"/>
+            <div class="form-column">
+                <label for="inputFirstname" class="sr-only">First name</label>
+                <input type="text" name="firstName" id="inputFirstname" class="form-control" placeholder="First name"
+                       required autofocus>
+            </div>
+            <div class="form-column">
+                <label for="inputLastname" class="sr-only">Last name</label>
+                <input type="text" name="lastName" id="inputLastname" class="form-control" placeholder="Last name"
+                       required autofocus>
+            </div>
+            <label for="inputUsername" class="sr-only">Username</label>
+            <input type="text" name="username" id="inputUsername" class="form-control" placeholder="Username" required
+                   autofocus>
+            <label for="inputEmail" class="sr-only">Email address</label>
+            <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email address" required
+                   autofocus>
+            <div class="form-column">
+                <label for="inputPassword1" class="sr-only">Password</label>
+                <input type="password" name="password1" id="inputPassword1" class="form-control" placeholder="Password"
+                       required>
+            </div>
+            <div class="form-column">
+                <label for="inputPassword2" class="sr-only">Re-enter Password</label>
+                <input type="password" name="password2" id="inputPassword2" class="form-control"
+                       placeholder="Re-enter Password" required>
+            </div>
+            <button class="btn btn-sm btn-primary btn-block" type="submit">Sign Up</button>
+            </br>
+        </form>
+    </div>
+
+
+    <div id="company" style="display:none;">
+        <form method="post" class="form-signup">
+            <input type="hidden" name="type" value="2"/>
+            <div class="form-column">
+                <label for="inputCEO" class="sr-only">CEO</label>
+                <input type="text" name="CEO" id="inputCEO" class="form-control" placeholder="CEO" required autofocus>
+            </div>
+            <div class="form-column">
+                <label for="inputPhone" class="sr-only">Company Phone Number</label>
+                <input type='number' name="Phone" id="inputPhone" class="form-control"
+                       placeholder="Company Phone Number" required
+                       autofocus>
+            </div>
+            <label for="inputCompanyname" class="sr-only">Company Name</label>
+            <input type="text" name="Companyname" id="inputCompanyName" class="form-control" placeholder="Company Name"
+                   required autofocus>
+            <label for="inputCompanySector" class="sr-only">Company Sector</label>
+            <input type="text" name="sector" id="inputCompanySector" class="form-control"
+                      placeholder="Company Sector" autofocus>
+            <label for="inputCompanyIndustry" class="sr-only">Company Industry</label>
+            <input type="text" name="industry" id="inputCompanyIndustry" class="form-control"
+                      placeholder="Company Industry" autofocus>
+            <label for="inputEmail" class="sr-only">Company Email</label>
+            <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Company Email" required
+                   autofocus>
+
+            <label for="inputCompanyLocation" class="sr-only">Company State</label>
+            <input type="text" name="state" id="inputCompany" class="form-control" placeholder="Company State"
+                   autofocus>
+            <label for="inputCompanyCountry" class="sr-only">Company Country</label>
+            <input type="text" name="country" id="inputCompanyCountry" class="form-control"
+               placeholder="Company Country" autofocus>
+
+               <label for="inputUsername" class="sr-only">Username</label>
+               <input type="text" name="username" id="inputUsername" class="form-control"
+               placeholder="Username" autofocus>
+            <div class="form-column">
+                <label for="inputPassword1" class="sr-only">Password</label>
+                <input type="password" name="password1" id="inputPassword1" class="form-control" placeholder="Password"
+                       required>
+            </div>
+            <div class="form-column">
+                <label for="inputPassword2" class="sr-only">Re-enter Password</label>
+                <input type="password" name="password2" id="inputPassword2" class="form-control"
+                       placeholder="Re-enter Password" required>
+            </div>
+            <button class="btn btn-sm btn-primary btn-block" type="submit">Sign Up</button>
+            </br>
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    p {
+        margin-left: 20px;
+        margin-right: 20px;
+        font-size: 16px;
+    }
+
+    h3 {
+        margin-right: 10px;
+        margin-left: 10px;
+    }
+
+    h4 {
+        margin-right: 10px;
+        margin-left: 10px;
+    }
+
+    .f {
+        padding: 0px 20px 0px 10px;
+        font-size: 16px;
+    }
+
+    #bullet {
+
+        margin-left: 20px;
+        margin-right: 20px;
+        font-size: 16px;
+    }
+
+    #remove {
+        margin-right: 10px;
+        margin-left: 40px;
+    }
+
+</style>
+<body>
+<h2 align="center">Welcome <strong>{{ user.username }}</strong></h2>
+{% if authenticated %}
+    {% include 'admin_navbar.html' %}
+{% elif investor %}
+    {% include 'investor_navbar.html' %}
+{% else %}
+    {% include 'company_navbar.html' %}
+{% endif %}
+{% block content %}
+    <h3><b>Welcome to Group: {{ group }}</b></h3>
+    <p id='remove'><a href="{% url 'remove_self_from_group' %}?value={{ group }}">Remove yourself from this group</a>
+    </p>
+
+    <h4>Group Members: </h4>
+    {% for member in members %}
+        <li id='bullet'>{{ member }}</li>
+    {% endfor %}
+
+
+    <form method="post" class="f">
+        </br><select name="person" id="type" required>
+        {% if group == "site_manager" %}
+            <option>Add Users to Group</option>
+            {% for investor in investorss %}
+                <option value="{{ investor.username }}">{{ investor.username }}</option></br>
+            {% endfor %}
+        {% else %}
+            <option>Add Users to Groups</option>
+            {% for addable in addable %}
+                <option value="{{ addable.username }}">{{ addable.username }}</option></br>
+            {% endfor %}
+        {% endif %}
+    </select>
+        <button type="submit" name="add_user" value="1">Add</button>
+    </form>
+    {% if authenticated %}
+        <form method="post" class="f">
+            <select name="person" id="type" required>
+                <option>Remove User from Group</option>
+                {% for removable in removable %}
+                    <option value="{{ removable.username }}">{{ removable.username }}</option></br>
+                {% endfor %}
+            </select>
+            <button type="submit" name="remove_user" value="1">Remove</button>
+        </form>
+    {% endif %}
+{% endblock %}
+</body>
+</html>

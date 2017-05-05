@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Edit Company</title>
+    <style>
+        h1 {
+            text-align: center;
+        }
+
+        p {
+            padding-left: 0px;
+            font-size: 16px;
+        }
+
+        .form-signup {
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .form-signup .form-signup-heading {
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .form-signup .form-control {
+            position: relative;
+            height: auto;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 5px;
+
+        }
+
+        .form-signup input[type="text"] {
+            margin-bottom: 5px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .form-signup input[type="email"] {
+            margin-bottom: 5px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .form-signup input[type="password"] {
+            margin-bottom: 5px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+
+        .form-signup input[type="tel"] {
+            margin-bottom: 5px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+
+        .form-column {
+            width: 50%;
+            float: left;
+        }
+
+    </style>
+
+</head>
+<body>
+<div class="container">
+    <h1 class="form-signup-heading">Update Information for {{ company.company_name }}</h1></br>
+    <form method="post" class="form-signup" action="{% url 'edit_report' %}?value={{ company.company_name }}&value2={{ company.report_id }}">
+        {% csrf_token %}
+        <input type="hidden" name="type" value="2"/>
+        <div class="form-column">
+          <p><b>Company CEO:</b></p>
+            <label for="inputCEO" class="sr-only">CEO</label>
+            <input type="text" name="CEO" id="inputCEO" class="form-control"
+                   value="{{ company.company_ceo }}" placeholder="CEO" required autofocus>
+        </div>
+        <div class="form-column">
+          <p><b>Company Phone Number:</b></p>
+            <label for="inputPhone" class="sr-only">Company Phone Number</label>
+            <input type='number' name="Phone" id="inputPhone" class="form-control"
+                   value="{{ company.company_phone }}" placeholder="000-000-0000" required
+                   autofocus>
+        </div>
+          <p><b>Company Sector:</b></p>
+        <label for="inputCompanySector" class="sr-only">Company Sector</label>
+        <input type="text" name="sector" id="inputCompanySector" class="form-control"
+               value="{{ company.company_sector }}" placeholder="Sector" autofocus>
+        <p><b>Company Industry:</b></p>
+        <label for="inputCompanyIndustry" class="sr-only">Company Industry</label>
+        <input type="text" name="industry" id="inputCompanyIndustry" class="form-control"
+               value="{{ company.company_industry }}" placeholder="Industry" autofocus>
+        <p><b>Company Email:</b></p>
+        <label for="inputEmail" class="sr-only">Company Email</label>
+        <input type="email" name="email" id="inputEmail" class="form-control" value="{{ company.company_email }}"
+               placeholder="Email"
+               required
+               autofocus>
+          <p><b>Company State:</b></p>
+        <label for="inputCompanyLocation" class="sr-only">Company State</label>
+        <input type="text" name="state" id="inputCompany" class="form-control" value="{{ company.company_state }}"
+               placeholder="State"
+               autofocus>
+        <p><b>Company Country:</b></p>
+        <label for="inputCompanyCountry" class="sr-only">Company Country</label>
+        <input type="text" name="country" id="inputCompanyCountry" class="form-control" placeholder="Country"
+               value="{{ company.company_country }}" autofocus>
+               {% if project %}
+                   <p><b>Company Current Projects:</b></p>
+
+                       {% for project in project %}
+                       <label for="inputCompanyCountry" class="sr-only">Company Projects</label>
+                              <input type="text" name="{{ project.id }}" id="inputCompanyProject" class="form-control" placeholder="{{project.id}}"
+                                     value="{{ project.project }}" autofocus>
+                       {% endfor %}
+
+               {% endif %}
+        <button class="btn btn-sm btn-primary btn-block" type="submit">Update</button>
+        </br>
+    </form>
+</div>
+</body>
+</html>

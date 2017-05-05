@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<style>
+  p {
+    padding: 0px 20px 0px 0px;
+    margin-left: 10px;
+    font-size: 20px
+}
+
+</style>
+<head>
+    <meta charset="UTF-8">
+    <title>Messages</title>
+</head>
+<h2 align="center">Welcome to your home page <strong>{{ user.username }}</strong></h2>
+<p align="right"><font size="4"><a href="{% url 'logout' %}">Logout</a></p>
+
+<body>
+  <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+          <div class="navbar-header">
+              <a class="navbar-brand" href="#">Lokahi</a>
+          </div>
+          <ul class="nav navbar-nav">
+            <li ><a href="{% url 'home' %}">Company Reports</a></li>
+            <li><a href="{% url 'groups_home' %}">Groups</a></li>
+            <li  ><a href="{% url 'compose_message2' %}">Send Message</a></li>
+            <li class="active"><a href=#>Messages</a></li>
+            <li><a href="{% url 'advanced_search' %}">Advanced Search</a></li>
+          </ul>
+      </div>
+  </nav>
+<p>
+    History of Messages
+</p>
+<p><b>Messages From: </b></br>Click below for more information</p>
+{% for company in companies %}
+    <p text-indent = '50px'><a href="{% url 'messages_from2' %}?value={{ company }}"> {{ company }}</a></br></p>
+{% endfor %}
+</br>
+<p><b>Sent messages: </b></p>
+{% for message in messages %}
+    <p><b>{{ message.message }}</b> to <b>{{message.receiver}}</b> on {{message.message_timestamp}}</br></p>
+{% endfor %}
+</body>
+</html>

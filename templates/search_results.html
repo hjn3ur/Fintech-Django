@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Search Results</title>
+
+
+    <script>
+        function showResults() {
+            var table, companies, search_table, companyIndex, parameters, parameterIndex, currentCompany, currentParameter, matchFound
+            table = document.getElementById("companyTable");
+            search_table = document.getElementById("parameters");
+            companies = table.getElementsByTagName("TR");
+            parameters = search_table.getElementsByTagName("TR")
+
+            if (parameters[1].getElementsByTagName("TD")[1].innerText === "Match all fields") {
+                for (companyIndex = 1; companyIndex < companies.length; companyIndex++) {
+                    // Loop through each company in the table
+                    currentCompany = companies[companyIndex].getElementsByTagName("TD");
+                    for (parameterIndex = 2; parameterIndex < parameters.length; parameterIndex++) {
+                        // Compare each parameter entered with the values for the given company
+                        currentParameter = parameters[parameterIndex].getElementsByTagName("TD");
+                        if (!currentCompany[parameterIndex - 1].innerText.toLowerCase().includes(currentParameter[1].innerText.toLowerCase())) {
+                            companies[companyIndex].style.display = "none"; // Hide the company if there is a mismatch
+                            break; // Don't need to look at the rest of the parameters once the first mismatch is found
+                        }
+                    }
+                }
+            } else {
+                for (companyIndex = 1; companyIndex < companies.length; companyIndex++) {
+                    // Hide all companies to start
+                    companies[companyIndex].style.display = "none"
+                }
+
+                for (companyIndex = 1; companyIndex < companies.length; companyIndex++) {
+                    // Loop through each company in the table
+                    matchFound = false;
+                    // No search/model field matches found to start
+                    currentCompany = companies[companyIndex].getElementsByTagName("TD");
+                    for (parameterIndex = 2; parameterIndex < parameters.length; parameterIndex++) {
+                        // Compare each parameter entered with the values for the given company
+                        currentParameter = parameters[parameterIndex].getElementsByTagName("TD");
+                        if (currentParameter[1].innerText === "") continue;
+                        if (currentCompany[parameterIndex - 1].innerText.toLowerCase().includes(currentParameter[1].innerText.toLowerCase())) {
+                            companies[companyIndex].style.display = ""; // Display the company when a match is found
+                            break; // Don't need to look at the rest of the parameters once the first match is found
+                        }
+                    }
+                }
+            }
+        }
+
+        // Adapted from https://www.w3schools.com/howto/howto_js_sort_table.asp
+        function sortTableByColumn(category) {
+            var table, rows, switching, item, currentItem, nextItem, shouldSwitch, direction, switchCount = 0;
+            table = document.getElementById("companyTable");
+            switching = true;
+            direction = "asc";
+            while (switching) {
+                switching = false;
+                rows = table.getElementsByTagName("TR");
+                for (item = 1; item < (rows.length - 1); item++) {
+                    shouldSwitch = false;
+                    currentItem = rows[item].getElementsByTagName("TD")[category];
+                    nextItem = rows[item + 1].getElementsByTagName("TD")[category];
+                    if (direction == "asc") {
+                        if (currentItem.innerHTML.toLowerCase() > nextItem.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (direction == "desc") {
+                        if (currentItem.innerHTML.toLowerCase() < nextItem.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+                if (shouldSwitch) {
+                    rows[item].parentNode.insertBefore(rows[item + 1], rows[item]);
+                    switching = true;
+                    switchCount++;
+                } else {
+                    if (switchCount == 0 && direction == "asc") {
+                        direction = "desc";
+                        switching = true;
+                    }
+                }
+            }
+        }
+
+    </script>
+
+
+    <style>
+
+        p {
+            padding: 0px 20px 0px 100px;
+        }
+
+        select {
+            padding: 10px;
+            margin-left: 10px;
+            width: 90%;
+            font-size: 20px;
+        }
+
+        .table {
+            border-collapse: collapse;
+            width: 90%;
+            border: 1px solid #ddd;
+            font-size: 18px;
+        }
+
+        tr.header, tr:hover {
+            /* Add a grey background color to the table header and on hover */
+            background-color: #f1f1f1;
+        }
+
+        th:hover {
+            background-color: white;
+        }
+
+        .parameterTable {
+            border-collapse: collapse;
+            width: 40%;
+            border: 5px solid #ddd;
+            font-size: 18px;
+        }
+
+    </style>
+</head>
+
+<h2 align="center">Search Results</h2>
+
+<body onload="showResults()">
+{% if authenticated %}
+    {% include 'admin_navbar.html' %}
+{% else %}
+    {% include 'investor_navbar.html' %}
+{% endif %}
+
+<h1><strong>Search Parameters:</strong></h1>
+<p></p>
+<table id=parameters class="parameterTable">
+    <tr class="header">
+        <th style="width:20%;">Parameter</th>
+        <th style="width:20%;">Value</th>
+    </tr>
+
+    <tr>
+        <td>Search type</td>
+        <td><strong>{{ search_type }}</strong></td>
+    </tr>
+    <tr>
+        <td>Company Name</td>
+        <td><strong>{{ Companyname }}</strong></td>
+    </tr>
+    <tr>
+        <td>Projects</td>
+        <td><strong>{{ projects }}</strong></td>
+    </tr>
+    <tr>
+        <td>CEO</td>
+        <td><strong>{{ CEO }}</strong></td>
+    </tr>
+    <tr>
+        <td>Industry</td>
+        <td><strong>{{ industry }}</strong></td>
+    </tr>
+    <tr>
+        <td>Sector</td>
+        <td><strong>{{ sector }}</strong></td>
+    </tr>
+    <tr>
+        <td>State</td>
+        <td><strong>{{ state }}</strong></td>
+    </tr>
+    <tr>
+        <td>Country</td>
+        <td><strong>{{ country }}</strong></td>
+    </tr>
+    <tr>
+        <td>Phone Number</td>
+        <td><strong>{{ phone }}</strong></td>
+    </tr>
+    <tr>
+        <td>Email Address</td>
+        <td><strong>{{ email }}</strong></td>
+    </tr>
+    <tr>
+        <td>Date of Report</td>
+        <td><strong>{{ reportDate }}</strong></td>
+    </tr>
+</table>
+
+<br/>
+<br/>
+<br/>
+
+<h1><strong>Results:</strong></h1>
+<p></p>
+<table id="companyTable" class="table">
+    <tr class="header">
+
+        <th style="width:2%;" onclick="sortTableByColumn(0)">ID</th>
+        <th style="width:8%;" onclick="sortTableByColumn(1)">Company</th>
+        <th style="width:8%;" onclick="sortTableByColumn(2)">Projects</th>
+        <th style="width:9%;" onclick="sortTableByColumn(3)">CEO</th>
+        <th style="width:8%;" onclick="sortTableByColumn(4)">Industry</th>
+        <th style="width:8%;" onclick="sortTableByColumn(5)">Sector</th>
+        <th style="width:7%;" onclick="sortTableByColumn(6)">State</th>
+        <th style="width:8%;" onclick="sortTableByColumn(7)">Country</th>
+        <th style="width:6%;" onclick="sortTableByColumn(8)">Phone</th>
+        <th style="width:6%;" onclick="sortTableByColumn(9)">Email</th>
+        <th style="width:10%;" onclick="sortTableByColumn(10)">Report Date</th>
+
+    </tr>
+    {% for obj in users %}
+        <tr>
+            <td>
+                <a href="{% url 'company_page' %}?value2={{ obj.report_id }}&value={{ obj.company_name }}">{{ obj.report_id }} </a>
+            </td>
+            <td> {{ obj.company_name }}</td>
+            <td> {{ obj.company_project }}</td>
+            <td> {{ obj.company_ceo }} </td>
+            <td> {{ obj.company_industry }} </td>
+            <td> {{ obj.company_sector }} </td>
+            <td> {{ obj.company_state }} </td>
+            <td> {{ obj.company_country }} </td>
+            <td> {{ obj.company_phone }} </td>
+            <td> {{ obj.company_email }} </td>
+            <td> {{ obj.company_time }} </td>
+        </tr>
+    {% endfor %}
+</table>
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+</body>
+</html>

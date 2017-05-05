@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+    p {
+        padding: 0px 20px 0px 0px;
+        margin-left: 10px;
+        font-size: 20px
+    }
+
+</style>
+<head>
+    <meta charset="UTF-8">
+    <title>Advanced Search</title>
+</head>
+<h2 align="center">Advanced Search - search more than one field</h2>
+<body>
+{% if authenticated %}
+    {% include 'admin_navbar.html' %}
+{% elif investor %}
+    {% include 'investor_navbar.html' %}
+{% else %}
+    {% include 'company_navbar.html' %}
+{% endif %}
+
+<title>Advanced Search</title>
+
+<style>
+    h1 {
+        text-align: center;
+    }
+
+    p {
+        padding-left: 5%;
+    }
+
+    .form-signup {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .form-signup .form-signup-heading {
+        margin-bottom: 10px;
+        text-align: center;
+    }
+
+    .form-signup .form-control {
+        position: relative;
+        height: auto;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        padding: 10px;
+        font-size: 16px;
+        margin-bottom: 5px;
+
+    }
+
+    .form-signup input[type="text"] {
+        margin-bottom: 5px;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+
+    .form-signup input[type="email"] {
+        margin-bottom: 5px;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+
+    .form-signup input[type="password"] {
+        margin-bottom: 5px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
+
+    .form-signup input[type="tel"] {
+        margin-bottom: 5px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
+
+
+</style>
+</body>
+</head>
+<body>
+<div class="container">
+    <form action="search_results" method="post" class="form-signup" id="search_form">
+        <input type="hidden" name="type" value="2"/>
+        <div>
+            <label for="andOr" class="sr-only">Search with And/Or</label><br>
+            <input type="radio" name="andOr" value="allFields" checked> Match all fields<br>
+            <input type="radio" name="andOr" value="atLeastOneField"> Match at least one field<br>
+        </div>
+
+        <div>
+            <label for="inputCompanyname" class="sr-only">Company Name</label>
+            <input type="text" name="Companyname" id="inputCompanyName" class="form-control"
+                   placeholder="Company name"
+               autofocus>
+        </div>
+        <div>
+            <label for="inputCEO" class="sr-only">CEO</label>
+            <input type="text" name="CEO" id="inputCEO" class="form-control"
+                   placeholder="CEO" autofocus>
+        </div>
+        <div>
+            <label for="inputPhone" class="sr-only">Company Phone Number</label>
+            <input type='number' name="Phone" id="inputPhone" class="form-control"
+                   placeholder="Phone" autofocus>
+        </div>
+        <div>
+            <label for="inputCompanySector" class="sr-only">Company Sector</label>
+            <input type="text" name="sector" id="inputCompanySector" class="form-control"
+                   placeholder="Sector" autofocus>
+        </div>
+        <div>
+            <label for="inputCompanyIndustry" class="sr-only">Company Industry</label>
+            <input type="text" name="industry" id="inputCompanyIndustry" class="form-control"
+                   placeholder="Industry" autofocus>
+        </div>
+        <div>
+            <label for="inputEmail" class="sr-only">Company Email</label>
+            <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email" autofocus>
+        </div>
+        <div>
+            <label for="inputCompanyLocation" class="sr-only">Company State</label>
+            <input type="text" name="state" id="inputCompany" class="form-control" placeholder="State" autofocus>
+        </div>
+        <div>
+            <label for="inputCompanyCountry" class="sr-only">Company Country</label>
+            <input type="text" name="country" id="inputCompanyCountry" class="form-control"
+               placeholder="Country" autofocus>
+        </div>
+        <div>
+            <label for="inputProjects" class="sr-only">Company Name</label>
+            <input type="text" name="projects" id="inputProjects" class="form-control"
+                   placeholder="Current Project(s)" autofocus>
+        </div>
+        <div>
+            <label for="inputReportDate" class="sr-only">Company Name</label>
+            <input type="text" name="reportDate" id="inputReportDate" class="form-control"
+                   placeholder="Date of Report" autofocus>
+        </div>
+            <button class="btn btn-sm btn-primary btn-block" type="submit">Search</button>
+        </br>
+    </form>
+</div>
+</body>
+</html>

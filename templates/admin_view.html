@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Investor homepage</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        // Adapted from https://www.w3schools.com/howto/howto_js_filter_table.asp
+        function searchFunction() {
+            // Declare variables
+            var input, filter, table, rows, entry, i;
+            input = document.getElementById("companyInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("companyTable");
+            rows = table.getElementsByTagName("tr");
+
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 1; i < rows.length; i++) {
+                entry = rows[i]
+                if ($('entry:contains(' + filter + ')')) {
+                    if (entry.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        rows[i].style.display = "";
+                    } else {
+                        rows[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
+        // Adapted from https://www.w3schools.com/howto/howto_js_sort_table.asp
+        function sortTableByColumn(category) {
+            var table, rows, switching, item, currentItem, nextItem, shouldSwitch, direction, switchCount = 0;
+            table = document.getElementById("companyTable");
+            switching = true;
+            direction = "asc";
+             while (switching) {
+                switching = false;
+                rows = table.getElementsByTagName("TR");
+                for (item = 1; item < (rows.length - 1); item++) {
+                    shouldSwitch = false;
+                    currentItem = rows[item].getElementsByTagName("TD")[category];
+                    nextItem = rows[item + 1].getElementsByTagName("TD")[category];
+                    if (direction == "asc") {
+                        if (currentItem.innerHTML.toLowerCase() > nextItem.innerHTML.toLowerCase()) {
+                            shouldSwitch= true;
+                            break;
+                        }
+                    } else if (direction == "desc") {
+                        if (currentItem.innerHTML.toLowerCase() < nextItem.innerHTML.toLowerCase()) {
+                            shouldSwitch= true;
+                            break;
+                        }
+                    }
+                 }
+                if (shouldSwitch) {
+                    rows[item].parentNode.insertBefore(rows[item + 1], rows[item]);
+                    switching = true;
+                    switchCount ++;
+                } else {
+                    if (switchCount == 0 && direction == "asc") {
+                    direction = "desc";
+                    switching = true;
+                    }
+                }
+             }
+        }
+    </script>
+
+    <style>
+        p {
+            padding: 0px 20px 0px 100px;
+        }
+
+        select {
+            padding: 10px;
+            margin-left: 10px;
+            width: 90%;
+            font-size: 20px;
+        }
+
+        .search {
+            width: 60%;
+            font-size: 19px;
+            padding: 12px 20px 12px 10px;
+            border: 1px solid #ddd;
+            margin-bottom: 12px;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .table {
+            border-collapse: collapse;
+            width: 90%;
+            border: 1px solid #ddd;
+            font-size: 18px;
+        }
+
+        tr.header, tr:hover {
+            /* Add a grey background color to the table header and on hover */
+            background-color: #f1f1f1;
+        }
+
+        th:hover {
+            background-color: white;
+        }
+
+        input[type=text]:focus {
+            width: 60%;
+        }
+    </style>
+
+
+</head>
+<h2 align="center">Welcome to your home page, <strong>{{ user.username }}</strong></h2>
+
+<body>
+
+{% include 'admin_navbar.html' %}
+
+
+<input type="text" id="companyInput" class="search" onkeyup="searchFunction()" placeholder="Search for companies">
+<table id="companyTable" class="table">
+    <tr class="header">
+
+        <th style="width:2%;" onclick="sortTableByColumn(0)">ID</th>
+        <th style="width:10%;" onclick="sortTableByColumn(1)">Company</th>
+        <th style="width:10%;" onclick="sortTableByColumn(2)">Industry</th>
+        <th style="width:10%;" onclick="sortTableByColumn(3)">CEO</th>
+        <th style="width:10%;" onclick="sortTableByColumn(4)">Sector</th>
+        <th style="width:10%;" onclick="sortTableByColumn(5)">Location</th>
+        <th style="width:10%;" onclick="sortTableByColumn(6)">Created On</th>
+
+    </tr>
+    {% for obj in users %}
+        <tr>
+          <td> <a href="{% url 'company_page' %}?value2={{ obj.report_id }}&value={{ obj.company_name }}">{{ obj.report_id }}</a> </td>
+            <td>
+                {{ obj.company_name }}
+            </td>
+
+            <td> {{ obj.company_industry }} </td>
+            <td> {{ obj.company_ceo }} </td>
+            <td> {{ obj.company_sector }} </td>
+            <td> {{ obj.company_country }} </td>
+            <td> {{ obj.company_time }} </td>
+        </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

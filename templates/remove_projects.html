@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>Remove a Project</title>
+    <script type="text/javascript">
+
+    </script>
+    <style>
+        h1 {
+            text-align: center;
+        }
+
+        p {
+
+            padding: 0px 20px 0px 100px;
+        }
+
+        .form-signup {
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .form-signup .form-signup-heading {
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .form-signup .form-control {
+            position: relative;
+            height: auto;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 5px;
+
+        }
+
+        .form-signup input[type="text"] {
+            margin-bottom: 5px;
+            margin-top: 5px;
+            font-size: 16px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+            width: 10%;
+        }
+
+        .form-column {
+            width: 50%;
+            float: left;
+        }
+
+    </style>
+</head>
+<body>
+<h1 class="form-signup-heading">Hi {{ user.username }}</h1></br>
+{% include 'company_navbar.html' %}
+<div class="container">
+  <h3 align = 'center'> Remove a Project your company is currently working on</h3></br>
+<form method="post" class="form-signup">
+  {% if project %}
+  {% csrf_token %}
+      <ul>
+          {% for project in project %}
+
+                <li >Started working on <input id='project' value='{{ project.project }}'><b>{{ project.project }}</b></input> on <b>{{ project.timestamp }}</b></li>
+                <button class="btn btn-sm btn-primary btn-block" type="submit">Remove from Report</button>
+          {% endfor %}
+      </ul>
+  {% else %}
+  <ul>
+      <li>No Current Project</li>
+    </ul>
+    {% endif %}
+
+        </br>
+    </form>
+</div>
+</body>
+</html>

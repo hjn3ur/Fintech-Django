@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Investor homepage</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        function searchFunction() {
+            // Declare variables
+            var input, filter, table, tr, td, i;
+            input = document.getElementById("companyInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("companyTable");
+            tr = table.getElementsByTagName("tr");
+
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 1; i < tr.length; i++) {
+                td = tr[i]
+                if ($('td:contains(' + filter + ')')) {
+                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        p {
+            padding: 0px 20px 0px 100px;
+        }
+
+        select {
+            padding: 10px;
+            margin-left: 10px;
+            width: 90%;
+            font-size: 20px;
+        }
+
+        .search {
+            width: 90%;
+            font-size: 19px;
+            padding: 12px 20px 12px 10px;
+            border: 1px solid #ddd;
+            margin-bottom: 12px;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .table {
+            border-collapse: collapse;
+            width: 90%;
+            margin-left: 10px;
+            border: 1px solid #ddd;
+            font-size: 18px;
+        }
+
+        tr.header, tr:hover {
+            /* Add a grey background color to the table header and on hover */
+            background-color: #f1f1f1;
+        }
+
+        input[type=text]:focus {
+            width: 60%;
+        }
+    </style>
+
+
+</head>
+<h2 align="center">Welcome <strong>{{ user.username }}</strong></h2>
+
+<body>
+{% include 'company_navbar.html' %}
+
+
+<input type="text" id="companyInput" class="search" onkeyup="searchFunction()" placeholder="Search for companies">
+<table id="companyTable" class="table">
+    <tr class="header">
+        <th style="width:10%;">ID</th>
+        <th style="width:10%;">Company</th>
+        <th style="width:10%;">Created On</th>
+    </tr>
+    {% for obj in report %}
+        <tr>
+            <td>
+                <a href="{% url 'final_reports' %}?value2={{ obj.report_id }}&value={{ obj.company_name }}">{{ obj.report_id }}
+            </td>
+            </a>
+            <td>
+                {{ obj.company_name }}
+            </td>
+
+            <td> {{ obj.company_time }} </td>
+        </tr>
+    {% endfor %}
+</table>
+
+
+</body>
+</html>

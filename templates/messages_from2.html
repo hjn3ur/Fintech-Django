@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<meta charset="UTF-8">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<title>Company Home</title>
+
+</head>
+<style>
+p {
+  padding: 0px 20px 0px 0px;
+    margin-left: 10px;
+    font-size: 16px
+}
+td {
+  font-size: 16px;
+}
+table {
+    margin-left: 10px;
+}
+</style>
+<h2 align="center">Welcome to your home page <strong>{{ user.username }}</strong></h2>
+<p align="right"><font size="4"><a href="{% url 'logout' %}">Logout</a></p>
+
+<body>
+  <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+          <div class="navbar-header">
+              <a class="navbar-brand" href="#">Lokahi</a>
+          </div>
+          <ul class="nav navbar-nav">
+            <li ><a href="{% url 'home' %}">Company Reports</a></li>
+            <li><a href="{% url 'groups_home' %}">Groups</a></li>
+            <li  ><a href="{% url 'compose_message2' %}">Send Message</a></li>
+            <li class="active"><a href=#>Messages</a></li>
+            <li><a href="{% url 'advanced_search' %}">Advanced Search</a></li>
+          </ul>
+      </div>
+  </nav>
+<table border="1">
+    {% for message in messages %}
+        <tr>
+            <td>
+                Message from: {{ message.sender }} </br>
+                Message: {{ message }} </br>
+                Timestamp: {{ message.timestamp }}
+            </td>
+        </tr>
+    {% endfor %}
+</table></br>
+<p>
+    <a href="{% url 'messages_home' %}">Back to all messages</a>
+</p>
+</body>
+</html>

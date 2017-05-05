@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+    p {
+        padding: 0px 20px 0px 0px;
+        margin-left: 10px;
+        font-size: 20px
+    }
+
+</style>
+<head>
+    <meta charset="UTF-8">
+    <title>Messages</title>
+</head>
+<h2 align="center">Welcome <strong>{{ user.username }}</strong></h2>
+
+<body>
+{% if authenticated %}
+    {% include 'admin_navbar.html' %}
+{% elif investor %}
+    {% include 'investor_navbar.html' %}
+{% else %}
+    {% include 'company_navbar.html' %}
+{% endif %}
+
+<p>
+    Your conversations
+</p>
+<p align="center"><b>Messages From: </b></br>Click below for more information</p>
+{% for conversation in conversations %}
+    <p align="center" text-indent='50px'>
+        <a href="{% url 'messages_from' %}?value={{ conversation }}"> {{ conversation }}</a></br>
+
+    </p>
+{% endfor %}
+</br>
+
+<p align="center">
+    Create a new conversation
+</p>
+<div class="container" align="center">
+    <form method="post" class="form-signup">
+        Receiver
+        <select name="receiver" class="form-control" id="type" required style="width: 25%">
+            <option>Select receiver</option>
+            {% for recipient in recipients %}
+                <option value="{{ recipient.username }}">{{ recipient.username }}</option></br>
+            {% endfor %}
+        </select>
+
+        <label for="inputMessage" class="sr-only">Your Message</label></br>
+        <textarea placeholder="Enter Message" type="text" name="message" id="inputMessage" cols="8" class="form-control" style="width: 50%"
+                  autofocus></textarea></br>
+        <input type="checkbox" name="encryptMessage" value="encrypt"> Encrypt<br/>
+        <br/>
+        <button class="btn btn-sm btn-primary btn-block" style="width: 20%" type="submit">Send</button>
+        </br>
+    </form>
+</div>
+
+
+</body>
+</html>

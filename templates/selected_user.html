@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ company.company_name }}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<script>
+
+</script>
+<style>
+    p {
+        padding: 0px 20px 0px 30px;
+        font-size: 16px;
+    }
+
+    button {
+        position: absolute;
+        left: 30px;
+    }
+
+    ul {
+        margin-left: 20px;
+        font-size: 16px
+    }
+</style>
+<body>
+
+<h2 align="center">Here is the Company information for {{ company.company_name }}</h2>
+
+{% include 'admin_navbar.html' %}
+{% block content %}
+
+
+
+    <p><b>Date of Original Report:</b> {{ company.company_time }}</p>
+    <!-- <p><b>Last Update of Report:</b> {{ rep.company_update }}</p> -->
+    <p><b>Company Name:</b> {{ company.company_name }}</p>
+    <p><b>CEO:</b> {{ company.company_ceo }}</p>
+    <p><b>Company Phone:</b> {{ company.company_phone }}</p>
+    <p><b>Company Email:</b> {{ company.company_email }}</p>
+    <p><b>Company Country:</b> {{ company.company_country }}</p>
+    <p><b>Company State:</b> {{ company.company_state }}</p>
+    <p><b>Company Sector:</b> {{ company.company_sector }}</p>
+    <p><b>Company Industry:</b> {{ company.company_industry }}</p>
+    {% if company.banned %}
+        <p><b>This user is currently banned would you like to unban them</b></p>
+        <p><a href="{% url 'ban_user' %}?value={{ company }}">unban this user</a></p>
+    {% else %}
+        <p><b>This user is currently not banned would you like to ban them</b></p>
+        <p><a href="{% url 'ban_user' %}?value={{ company }}">ban this user</a></p>
+    {% endif %}
+    <br>
+    
+
+{% endblock %}
+</body>
+</html>
